@@ -668,7 +668,7 @@ static u8 ov13_0222050C (UnkStruct_ov13_022213F0 * param0)
             ov13_02225FCC(param0, 29);
         }
 
-        if (ov13_022219DC(param0) == 1) {
+        if (ov13_022219DC(param0) == 2) {
             ov13_02223118(param0);
 
             if (param0->unk_2073_0 == 0) {

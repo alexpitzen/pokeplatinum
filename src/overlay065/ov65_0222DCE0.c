@@ -6264,7 +6264,8 @@ static void ov65_0223416C (UnkStruct_ov65_0222EBE0 * param0, u32 param1)
     v0 = param0->unk_BE0.unk_71 - 1;
 
     {
-        MessageLoader_GetStrbuf(param0->unk_168, 54, param0->unk_178);
+        // Not fishing (whole file)
+        MessageLoader_GetStrbuf(param0->unk_168, 54, param0->unk_178); // Not fishing
         sub_0201D78C(&param0->unk_BE0.unk_1FC, 0, param0->unk_178, 8, 0, 0xff, ((u32)(((15 & 0xff) << 16) | ((14 & 0xff) << 8) | ((0 & 0xff) << 0))), NULL);
         MessageLoader_GetStrbuf(param0->unk_168, 63, param0->unk_178);
 

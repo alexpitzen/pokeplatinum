@@ -394,6 +394,7 @@ BOOL ov6_02240D5C (UnkStruct_0203CDB0 * param0)
     return v6;
 }
 
+// Determine if fishing results in a catch or not
 BOOL ov6_0224106C (UnkStruct_0203CDB0 * param0, const int param1, BattleParams ** param2)
 {
     Pokemon * v0;
@@ -416,7 +417,9 @@ BOOL ov6_0224106C (UnkStruct_0203CDB0 * param0, const int param1, BattleParams *
         ov6_02242634(param0, v0, NULL, &v4);
         v5 = ov6_0224226C(1, v5, &v4, sub_0203A74C(sub_0203A790(param0->unk_0C)), v0);
 
-        if (inline_020564D0(100) >= v5) {
+        // if (inline_020564D0(100) >= v5) {
+        // 1% chance to not get an encounter
+        if (inline_020564D0(100) == v5) {
             return 0;
         }
     }

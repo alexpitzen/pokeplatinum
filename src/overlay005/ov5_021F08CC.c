@@ -58,11 +58,11 @@ typedef struct {
     BOOL unk_00;
     int unk_04;
     int unk_08;
-    int unk_0C;
+    int unk_0C; // Index into Unk_ov5_021FFA0C to execute next
     int unk_10;
-    int unk_14;
-    int unk_18;
-    int unk_1C;
+    int unk_14; // timer until pokemon is hooked
+    int unk_18; // timer for pressing A once a pokemon is landed
+    int unk_1C; // Fishing rod type?
     UnkStruct_0203CDB0 * unk_20;
     UnkStruct_ov101_021D5D90 * unk_24;
     u8 unk_28;
@@ -109,7 +109,7 @@ BOOL ov5_021F08F8 (UnkStruct_020508D4 * param0)
         sub_02062C48(v0->unk_38);
         v1->unk_10 = NULL;
         v1->unk_08 = ov6_0224106C(v0, v1->unk_0C, &v1->unk_10);
-        v1->unk_14 = ov5_021F09B4(v0, v1->unk_0C, v1->unk_08);
+        v1->unk_14 = ov5_021F09B4(v0, v1->unk_0C, v1->unk_08); // Initiate fishing ?
         v1->unk_00++;
         break;
     case 1:
@@ -230,7 +230,7 @@ static int ov5_021F0A80 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
     }
 
     if (param0->unk_00 == 1) {
-        param0->unk_0C = 3;
+        param0->unk_0C = 3; // Start encounter catching
     } else {
         param0->unk_0C = 12;
     }
@@ -241,8 +241,8 @@ static int ov5_021F0A80 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 
 static int ov5_021F0AB8 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * param1, UnkStruct_02061AB4 * param2)
 {
-    param0->unk_14 = ((LCRNG_Next() % 4) + 1) * 30;
-    param0->unk_18 = Unk_ov5_021FFA00[param0->unk_1C];
+    param0->unk_14 = ((LCRNG_Next() % 4) + 1) * 30; // Frames until exclamation mark for catch
+    param0->unk_18 = Unk_ov5_021FFA00[param0->unk_1C]; // How long the player has to press A to succeed the catch
     param0->unk_0C = 4;
 
     return 1;
@@ -252,17 +252,28 @@ static int ov5_021F0AEC (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 {
     param0->unk_14--;
 
-    if (ov5_021F0D40() == 1) {
+    // This seems to be the handler for fishing that _will_ result in a catch
+
+    // If not pressing A
+    // was != 1
+    // == 2 : never trigger "reeled in too early" if a pokemon can be hooked
+    if (ov5_021F0D40() == 2) {
+        // this causes "reeled in too early"
         param0->unk_0C = 10;
         return 1;
     }
 
-    if (param0->unk_14 > 0) {
+    // unk_14 > 0 : if we haven't completed our timer yet, skip
+    // == 0xFF : Don't go in here ; land pokemon on first frame possible
+    if (param0->unk_14 == 0xFF) {
         return 0;
     }
 
+    // we _have_ completed the timer, so initiate the "landed a pokemon" routine
+
     sub_02062A0C(param2, 0x2);
 
+    // Gen ??
     param0->unk_24 = ov5_021F5D8C(param2, 0, 1, 0);
     param0->unk_0C = 5;
 
@@ -273,7 +284,12 @@ static int ov5_021F0B30 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 {
     param0->unk_18--;
 
-    if (ov5_021F0D40() == 1) {
+    // Pokemon on the line! Press A
+
+    // If pressing A
+    // was == 1
+    // != 2 : Always succeed the A press immediately
+    if (ov5_021F0D40() != 2) {
         param0->unk_0C = 6;
         return 1;
     }
@@ -310,7 +326,7 @@ static int ov5_021F0B7C (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
     if (param0->unk_10 > 15) {
         param0->unk_10 = 0;
         param0->unk_0C = 8;
-        ov5_021F0DE8(param0, 57);
+        ov5_021F0DE8(param0, 57); // FISHING: Landed a pokemon
     }
 
     return 0;
@@ -337,7 +353,7 @@ static int ov5_021F0BC8 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 static int ov5_021F0BD4 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * param1, UnkStruct_02061AB4 * param2)
 {
     sub_02062A0C(param2, 0x0);
-    ov5_021F0DE8(param0, 56);
+    ov5_021F0DE8(param0, 56); // FISHING: Reeled in too quickly
 
     param0->unk_10 = 16;
     param0->unk_0C = 14;
@@ -348,7 +364,7 @@ static int ov5_021F0BD4 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 static int ov5_021F0BF4 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * param1, UnkStruct_02061AB4 * param2)
 {
     sub_02062A0C(param2, 0x0);
-    ov5_021F0DE8(param0, 55);
+    ov5_021F0DE8(param0, 55); // FISHING: The pokemon got away
 
     param0->unk_10 = 16;
     param0->unk_0C = 14;
@@ -365,7 +381,9 @@ static int ov5_021F0BF4 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 
 static int ov5_021F0C34 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * param1, UnkStruct_02061AB4 * param2)
 {
-    param0->unk_10 = 30 * 4;
+    // 4 seconds ?
+    // param0->unk_10 = 30 * 4;
+    param0->unk_10 = 10;
     param0->unk_0C = 13;
 
     return 1;
@@ -375,6 +393,7 @@ static int ov5_021F0C40 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
 {
     param0->unk_10--;
 
+    // If pressing A
     if (ov5_021F0D40() == 1) {
         param0->unk_0C = 10;
         return 1;
@@ -385,7 +404,7 @@ static int ov5_021F0C40 (UnkStruct_ov5_021F0D6C * param0, UnkStruct_0205E884 * p
     }
 
     sub_02062A0C(param2, 0x0);
-    ov5_021F0DE8(param0, 54);
+    ov5_021F0DE8(param0, 54); // FISHING: Not even a nibble
 
     param0->unk_10 = 16;
     param0->unk_0C = 14;
@@ -460,17 +479,17 @@ static int(*const Unk_ov5_021FFA0C[])(UnkStruct_ov5_021F0D6C *, UnkStruct_0205E8
     ov5_021F0A30,
     ov5_021F0A48,
     ov5_021F0A80,
-    ov5_021F0AB8,
-    ov5_021F0AEC,
+    ov5_021F0AB8, // Initiate encounter route
+    ov5_021F0AEC, // 5 - if press anything, sometimes results in reeled in too quickly
     ov5_021F0B30,
     ov5_021F0B5C,
-    ov5_021F0B7C,
+    ov5_021F0B7C, // display text? landed a pokemon
     ov5_021F0BB0,
-    ov5_021F0BC8,
-    ov5_021F0BD4,
-    ov5_021F0BF4,
-    ov5_021F0C34,
-    ov5_021F0C40,
+    ov5_021F0BC8, // returns 1
+    ov5_021F0BD4, // display text? reeled in too quickly
+    ov5_021F0BF4, // display text? pokemon got away
+    ov5_021F0C34, // Initiate non-encounter route
+    ov5_021F0C40, // display text? not even a nibble
     ov5_021F0C84,
     ov5_021F0CB0,
     ov5_021F0CEC,
@@ -570,8 +589,9 @@ static u16 ov5_021F0E58 (int param0)
     }
 }
 
+// Timer for pressing A once the encounter shows up
 static const int Unk_ov5_021FFA00[] = {
-    0x2D,
-    0x1E,
-    0xF
+    0x2D, // old rod
+    0x1E, // good rod
+    0xF // super rod
 };

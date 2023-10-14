@@ -867,7 +867,7 @@ static void ov81_021D29B4 (UnkStruct_ov81_021D1610 * param0, UnkStruct_0205AA50 
         v0 = MessageLoader_GetNewStrbuf(param0->unk_50, 53);
         break;
     case 1:
-        v0 = MessageLoader_GetNewStrbuf(param0->unk_50, 54);
+        v0 = MessageLoader_GetNewStrbuf(param0->unk_50, 54); // Not fishing
         break;
     default:
         if (param2->unk_01_6 == 0) {

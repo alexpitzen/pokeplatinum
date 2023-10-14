@@ -568,7 +568,7 @@ void ov84_0223FFF0 (UnkStruct_ov84_0223B5A0 * param0)
     sub_0200E060(&param0->unk_04[6], 1, 1024 - 9 - (18 + 12), 12);
     sub_0201ADA4(&param0->unk_04[6], 15);
 
-    v1 = MessageLoader_GetNewStrbuf(param0->unk_114, 54);
+    v1 = MessageLoader_GetNewStrbuf(param0->unk_114, 54); // Not fishing
     v0 = &param0->unk_C4->unk_04[param0->unk_C4->unk_64];
 
     if (param0->unk_488 == 1) {

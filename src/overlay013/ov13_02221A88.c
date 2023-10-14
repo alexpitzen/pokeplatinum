@@ -952,10 +952,11 @@ static void ov13_02222EF8 (UnkStruct_ov13_022213F0 * param0, u32 param1, u32 par
     Strbuf* v1;
 
     v0 = &param0->unk_206C[param1];
-
+    // physical/status/special?
+    // res/text/pl_msg_00000003.gmm ?
     switch (param2) {
     case 0:
-        v1 = MessageLoader_GetNewStrbuf(param0->unk_1FA4, 54);
+        v1 = MessageLoader_GetNewStrbuf(param0->unk_1FA4, 54); // Not fishing
         break;
     case 1:
         v1 = MessageLoader_GetNewStrbuf(param0->unk_1FA4, 56);

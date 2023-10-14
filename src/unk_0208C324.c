@@ -768,6 +768,7 @@ static int sub_0208CD44 (UnkStruct_0208D7BC * param0)
         sub_02005748(1501);
 
         if (param0->unk_6A5_0 != 4) {
+            // Compare Item_IsHMMove to 2 to not detect HMs and allow overwriting
             if ((Item_IsHMMove(param0->unk_250.unk_34[param0->unk_6A5_0]) == 2) && (param0->unk_24C->unk_18 != 0)) {
                 sub_0200D3EC(param0->unk_41C[18], 0);
                 sub_0208E46C(param0);

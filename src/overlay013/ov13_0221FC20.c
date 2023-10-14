@@ -668,6 +668,7 @@ static u8 ov13_0222050C (UnkStruct_ov13_022213F0 * param0)
             ov13_02225FCC(param0, 29);
         }
 
+        // Compare Item_IsHMMove to 2 to not detect HMs and allow overwriting
         if (ov13_022219DC(param0) == 2) {
             ov13_02223118(param0);
 

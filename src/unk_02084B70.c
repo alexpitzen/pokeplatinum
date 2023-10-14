@@ -1147,6 +1147,7 @@ static void sub_02086590 (UnkStruct_0207F248 * param0, Pokemon * param1, u32 par
 
     if (param0->unk_5A4->unk_24 != 0) {
         if (Item_IsHMMove(param0->unk_5A4->unk_26) == 0) {
+            // Subtract 0 from inventory on TM use
             Bag_SubtractItem(param0->unk_5A4->unk_04, param0->unk_5A4->unk_24, 0, 12);
         }
 
